@@ -1,4 +1,6 @@
-// Placeholder. T0 replaces this with the router, Layout and sidebar.
+import { RouterProvider } from 'react-router'
+import { router } from './app/router'
+
 export default function App() {
-  return <h1>CareClaim Ops</h1>
+  return <RouterProvider router={router} />
 }

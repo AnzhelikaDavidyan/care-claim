@@ -1,0 +1,49 @@
+.layout {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  min-height: 100vh;
+}
+
+.sidebar {
+  background: #0f1e3d;
+  color: #fff;
+  padding: 20px 12px;
+}
+
+.sidebar__brand {
+  font-weight: 700;
+  font-size: 18px;
+  padding: 0 12px 20px;
+}
+
+.sidebar__nav {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 4px;
+}
+
+.sidebar__link {
+  display: block;
+  padding: 8px 12px;
+  border-radius: 6px;
+  color: #c9d3e8;
+  text-decoration: none;
+}
+
+.sidebar__link:hover {
+  background: rgb(255 255 255 / 8%);
+  color: #fff;
+}
+
+.sidebar__link--active {
+  background: rgb(255 255 255 / 14%);
+  color: #fff;
+  font-weight: 600;
+}
+
+.layout__main {
+  padding: 24px 32px;
+  min-width: 0;
+}
