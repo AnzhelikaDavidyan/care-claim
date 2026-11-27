@@ -1,0 +1,109 @@
+.doctor-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 18px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+}
+
+.doctor-card__head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.doctor-card__avatar {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--color-primary-soft);
+  color: var(--color-primary-dark);
+  font-weight: 700;
+}
+
+.doctor-card__title {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.doctor-card__name {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.doctor-card__specialty {
+  font-size: 14px;
+  color: var(--color-text-muted);
+}
+
+.doctor-card__meta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 13px;
+  color: var(--color-text-subtle);
+}
+
+.doctor-card__actions {
+  display: flex;
+  gap: 6px;
+  margin-top: auto;
+}
+
+.doctor-card__book {
+  flex: 1;
+  height: 40px;
+}
+
+.doctor-card__actions .btn--icon {
+  height: 40px;
+}
+
+/* Skeleton shown while doctors load. */
+.doctor-card--skeleton {
+  pointer-events: none;
+}
+
+.skeleton {
+  border-radius: 6px;
+  background: linear-gradient(90deg, #eef1f6 25%, #f6f8fb 50%, #eef1f6 75%);
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.2s ease-in-out infinite;
+}
+
+.skeleton--avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+}
+
+.skeleton--line {
+  height: 12px;
+}
+
+.skeleton--button {
+  height: 40px;
+  border-radius: var(--radius);
+}
+
+@keyframes skeleton-shimmer {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: -100% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton {
+    animation: none;
+  }
+}

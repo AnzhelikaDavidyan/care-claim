@@ -12,7 +12,16 @@ export function Layout() {
   return (
     <div className="layout">
       <aside className="sidebar">
-        <div className="sidebar__brand">CareClaim</div>
+        <div className="sidebar__brand">
+          <svg aria-hidden="true" width="30" height="30" viewBox="0 0 30 30">
+            <rect width="30" height="30" rx="9" fill="currentColor" />
+            <path d="M15 9v12M9 15h12" stroke="#fff" strokeWidth="3" strokeLinecap="round" />
+          </svg>
+          <div className="sidebar__brand-text">
+            <span className="sidebar__brand-name">CareClaim</span>
+            <span className="sidebar__brand-tagline">Care &amp; claims</span>
+          </div>
+        </div>
         <nav aria-label="Main">
           <ul className="sidebar__nav">
             {NAV_ITEMS.map((item) => (

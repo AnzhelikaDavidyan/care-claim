@@ -1,0 +1,25 @@
+.doctors-page {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.doctors-page__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.doctors-page__title {
+  font-family: var(--font-display);
+  font-size: 28px;
+  line-height: 1.2;
+}
+
+.doctors-page__subtitle {
+  margin: 2px 0 0;
+  font-size: 14px;
+  color: var(--color-text-subtle);
+}

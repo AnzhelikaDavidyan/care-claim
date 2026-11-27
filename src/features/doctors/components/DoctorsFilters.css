@@ -1,0 +1,14 @@
+.doctors-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+.doctors-filters__search {
+  flex: 2 1 280px;
+}
+
+.doctors-filters__specialty {
+  flex: 1 1 180px;
+}
