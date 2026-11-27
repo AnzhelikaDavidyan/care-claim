@@ -8,7 +8,7 @@ export function RouteErrorPage() {
     <section style={{ padding: 32 }}>
       <h1>Something went wrong</h1>
       <p>{message}</p>
-      <Link to="/claims">Go to claims</Link>
+      <Link to="/doctors">Go to doctors</Link>
     </section>
   )
 }

@@ -1,16 +1,18 @@
 import { NavLink, Outlet } from 'react-router'
 import './Layout.css'
 
+/** NavLink without `end` stays active on child routes, e.g. Doctors on /doctors/:id/book. */
 const NAV_ITEMS = [
+  { to: '/doctors', label: 'Doctors' },
+  { to: '/bookings', label: 'Bookings' },
   { to: '/claims', label: 'Claims' },
-  { to: '/members', label: 'Members' },
 ]
 
 export function Layout() {
   return (
     <div className="layout">
       <aside className="sidebar">
-        <div className="sidebar__brand">CareClaim Ops</div>
+        <div className="sidebar__brand">CareClaim</div>
         <nav aria-label="Main">
           <ul className="sidebar__nav">
             {NAV_ITEMS.map((item) => (

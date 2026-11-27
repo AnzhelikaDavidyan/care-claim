@@ -1,8 +1,10 @@
 import { Navigate, type RouteObject } from 'react-router'
-import { ClaimDetailPage } from '../features/claims/pages/ClaimDetailPage'
-import { ClaimFormPage } from '../features/claims/pages/ClaimFormPage'
+import { BookAppointmentPage } from '../features/bookings/pages/BookAppointmentPage'
+import { BookingsPage } from '../features/bookings/pages/BookingsPage'
+import { ReschedulePage } from '../features/bookings/pages/ReschedulePage'
+import { ClaimDrawer } from '../features/claims/pages/ClaimDrawer'
 import { ClaimsPage } from '../features/claims/pages/ClaimsPage'
-import { MembersPage } from '../features/members/pages/MembersPage'
+import { DoctorsPage } from '../features/doctors/pages/DoctorsPage'
 import { Layout } from './Layout'
 import { NotFoundPage } from './pages/NotFoundPage'
 import { RouteErrorPage } from './pages/RouteErrorPage'
@@ -13,17 +15,30 @@ export const routes: RouteObject[] = [
     element: <Layout />,
     errorElement: <RouteErrorPage />,
     children: [
-      { index: true, element: <Navigate to="/claims" replace /> },
+      { index: true, element: <Navigate to="/doctors" replace /> },
       {
-        path: 'claims',
+        path: 'doctors',
         children: [
-          { index: true, element: <ClaimsPage /> },
-          { path: 'new', element: <ClaimFormPage mode="create" /> },
-          { path: ':id', element: <ClaimDetailPage /> },
-          { path: ':id/edit', element: <ClaimFormPage mode="edit" /> },
+          { index: true, element: <DoctorsPage /> },
+          { path: ':id/book', element: <BookAppointmentPage /> },
         ],
       },
-      { path: 'members', element: <MembersPage /> },
+      {
+        path: 'bookings',
+        children: [
+          { index: true, element: <BookingsPage /> },
+          { path: ':id/reschedule', element: <ReschedulePage /> },
+        ],
+      },
+      {
+        // The drawer routes are children of the claims page, so the table stays mounted behind them.
+        path: 'claims',
+        element: <ClaimsPage />,
+        children: [
+          { path: 'new', element: <ClaimDrawer mode="create" /> },
+          { path: ':id/edit', element: <ClaimDrawer mode="edit" /> },
+        ],
+      },
       { path: '*', element: <NotFoundPage /> },
     ],
   },

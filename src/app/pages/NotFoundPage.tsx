@@ -5,7 +5,7 @@ export function NotFoundPage() {
     <section>
       <h1>Page not found</h1>
       <p>This page does not exist.</p>
-      <Link to="/claims">Go to claims</Link>
+      <Link to="/doctors">Go to doctors</Link>
     </section>
   )
 }

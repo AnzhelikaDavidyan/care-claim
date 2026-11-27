@@ -1,6 +1,7 @@
 # CareClaim Ops
 
-A claims and members admin app, built task by task as React + TypeScript interview practice.
+CareClaim: manage doctors, bookings and claims. Built task by task (T0–T11) as React + TypeScript interview practice.
+The Doctors → Book → Bookings flow mirrors a Doctolib-like app.
 
 ## Stack
 
@@ -18,12 +19,29 @@ React Hook Form + Zod, MSW (mock API), Vitest + Testing Library, SheetJS and jsP
 | `npm run lint` | Lint with oxlint |
 | `npm run build` | Production build |
 
+## Routes
+
+| URL | Screen |
+| --- | --- |
+| `/doctors` | Doctors list (`/` redirects here) |
+| `/doctors/:id/book` | Book an appointment |
+| `/bookings` | Bookings (Upcoming / Past / Cancelled) |
+| `/bookings/:id/reschedule` | Reschedule a booking |
+| `/claims` | Claims table |
+| `/claims/new`, `/claims/:id/edit` | Claim drawer over the table |
+
+## Mock API
+
+MSW in `src/mocks` serves `/api/doctors`, `/api/doctors/:id`, `/api/doctors/:id/slots?date=`,
+`/api/bookings` (GET, POST) and `/api/claims` from a seeded in-memory db. In the browser it waits
+300–1200 ms and fails ~10% of requests on purpose; a POST for a taken slot answers 409.
+
 ## Folders
 
 ```
 src/
   app/        store.ts, router.tsx, Layout.tsx (sidebar)
-  features/   claims/  members/  export/  toasts/
+  features/   doctors/  bookings/  claims/  export/  toasts/
   shared/     ui/ (Button, Modal, Drawer, StatusChip), hooks/, lib/ (format, csv)
   mocks/      db.ts, handlers.ts, browser.ts
   test/       setup.ts
