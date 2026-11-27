@@ -1,27 +1,77 @@
+import { useEffect, useState } from 'react'
 import { EmptyState, ErrorState } from '../../../shared/ui/StatePanel'
 import { DoctorCard } from '../components/DoctorCard'
 import { DoctorsFilters } from '../components/DoctorsFilters'
 import { DoctorsGrid, DoctorsGridSkeleton } from '../components/DoctorsGrid'
-import type { Doctor, Specialty } from '../types'
+import { SPECIALTIES, type Doctor, type Specialty } from '../types'
 import './DoctorsPage.css'
+import { fetchDoctors } from '../../../api/doctors'
+import { useSearchParams } from 'react-router'
+import { useDebounce } from '../../../shared/hooks/useDebounce'
 
-/**
- * T1 — Doctors list. The markup below is done. Your part is everything marked TODO(T1):
- * the values in the stub block are fake, replace them with real state, URL params and fetching.
- * Change the shape freely (e.g. a status union, or useReducer) — the JSX only needs these values.
- */
+function isSpecialty(value: string): value is Specialty {
+  return (SPECIALTIES as readonly string[]).includes(value)
+}
+
 export function DoctorsPage() {
-  // ── TODO(T1): stub values, replace with your code ──────────────────────────
-  const query = '' //               raw search box text, from ?q= in the URL
-  const specialty: Specialty | '' = '' // from ?specialty= in the URL
-  const isLoading = true
-  const error: string | null = null
-  const doctors: Doctor[] = []
-  const onQueryChange = (_value: string) => {} //            write ?q= (keep the other params)
-  const onSpecialtyChange = (_value: Specialty | '') => {} // write ?specialty=
-  const onRetry = () => {} //                                 fetch again
-  const onClearSearch = () => {} //                           remove q and specialty
-  // ───────────────────────────────────────────────────────────────────────────
+  const [doctors, setDoctors] = useState<Doctor[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [reloadKey, setReloadKey] = useState(0);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const query = searchParams.get('q') || '';
+  const debouncedQuery = useDebounce(query, 300);
+  const rawSpecialty = searchParams.get('specialty') || '';
+  const specialty: Specialty | '' = isSpecialty(rawSpecialty) ? rawSpecialty : '';
+
+  useEffect(() => {
+    fetchDoctors({ q: debouncedQuery, specialty })
+      .then((data) => setDoctors(data))
+      .catch((err: unknown) => setError(err instanceof Error ? err.message : 'Something went wrong'))
+      .finally(() => setIsLoading(false))
+  }, [reloadKey, debouncedQuery, specialty]);
+
+  const startLoading = () => {
+    setIsLoading(true)
+    setError(null)
+  }
+
+  const onRetry = () => {
+    startLoading()
+    setReloadKey((key) => key + 1)
+  }
+
+  const updateParam = (key: string, value: string, replace = false) => {
+    setSearchParams(
+      (prev) => {
+        const next = new URLSearchParams(prev)
+        if (value) next.set(key, value)
+        else next.delete(key)
+        return next
+      },
+      { replace },
+    )
+  }
+
+  const onQueryChange = (value: string) => {
+    startLoading()
+    updateParam('q', value, true)
+  }
+
+  const onSpecialtyChange = (value: Specialty | '') => {
+    startLoading()
+    updateParam('specialty', value)
+  }
+
+  const onClearSearch = () => {
+    startLoading()
+    setSearchParams((prev) => {
+      const next = new URLSearchParams(prev)
+      next.delete('q')
+      next.delete('specialty')
+      return next
+    })
+  }
 
   return (
     <section className="doctors-page">
