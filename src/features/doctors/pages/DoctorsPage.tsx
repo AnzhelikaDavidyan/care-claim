@@ -1,36 +1,36 @@
 import { useEffect, useState } from 'react'
+import { useSearchParams } from 'react-router'
+import { fetchDoctors } from '../../../api/doctors'
+import { useDebounce } from '../../../shared/hooks/useDebounce'
 import { EmptyState, ErrorState } from '../../../shared/ui/StatePanel'
 import { DoctorCard } from '../components/DoctorCard'
 import { DoctorsFilters } from '../components/DoctorsFilters'
 import { DoctorsGrid, DoctorsGridSkeleton } from '../components/DoctorsGrid'
 import { SPECIALTIES, type Doctor, type Specialty } from '../types'
 import './DoctorsPage.css'
-import { fetchDoctors } from '../../../api/doctors'
-import { useSearchParams } from 'react-router'
-import { useDebounce } from '../../../shared/hooks/useDebounce'
 
 function isSpecialty(value: string): value is Specialty {
   return (SPECIALTIES as readonly string[]).includes(value)
 }
 
 export function DoctorsPage() {
-  const [doctors, setDoctors] = useState<Doctor[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [reloadKey, setReloadKey] = useState(0);
-  const [searchParams, setSearchParams] = useSearchParams();
-  const query = searchParams.get('q') || '';
-  const debouncedQuery = useDebounce(query, 300);
-  const rawSpecialty = searchParams.get('specialty') || '';
-  const specialty: Specialty | '' = isSpecialty(rawSpecialty) ? rawSpecialty : '';
+  const [doctors, setDoctors] = useState<Doctor[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+  const [reloadKey, setReloadKey] = useState(0)
+  const [searchParams, setSearchParams] = useSearchParams()
+  const query = searchParams.get('q') ?? ''
+  const debouncedQuery = useDebounce(query, 300)
+  const rawSpecialty = searchParams.get('specialty') ?? ''
+  const specialty: Specialty | '' = isSpecialty(rawSpecialty) ? rawSpecialty : ''
 
   useEffect(() => {
-    const controller = new AbortController();
+    const controller = new AbortController()
 
     fetchDoctors({ q: debouncedQuery, specialty }, controller.signal)
       .then((data) => setDoctors(data))
       .catch((err: unknown) => {
-        if (controller.signal.aborted) return;
+        if (controller.signal.aborted) return
         setError(err instanceof Error ? err.message : 'Something went wrong')
       })
       .finally(() => {
@@ -38,7 +38,7 @@ export function DoctorsPage() {
       })
 
     return () => controller.abort()
-  }, [reloadKey, debouncedQuery, specialty]);
+  }, [reloadKey, debouncedQuery, specialty])
 
   const startLoading = () => {
     setIsLoading(true)
