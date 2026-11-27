@@ -25,10 +25,19 @@ export function DoctorsPage() {
   const specialty: Specialty | '' = isSpecialty(rawSpecialty) ? rawSpecialty : '';
 
   useEffect(() => {
-    fetchDoctors({ q: debouncedQuery, specialty })
+    const controller = new AbortController();
+
+    fetchDoctors({ q: debouncedQuery, specialty }, controller.signal)
       .then((data) => setDoctors(data))
-      .catch((err: unknown) => setError(err instanceof Error ? err.message : 'Something went wrong'))
-      .finally(() => setIsLoading(false))
+      .catch((err: unknown) => {
+        if (controller.signal.aborted) return;
+        setError(err instanceof Error ? err.message : 'Something went wrong')
+      })
+      .finally(() => {
+        if (!controller.signal.aborted) setIsLoading(false)
+      })
+
+    return () => controller.abort()
   }, [reloadKey, debouncedQuery, specialty]);
 
   const startLoading = () => {
